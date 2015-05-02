@@ -1,13 +1,15 @@
 // Globally head date object for the month shown
 var date = new Date();
 date.setDate(1);
-date.setMonth(0);
 
 window.onload = function() {
     // Add the current month on load
     createMonth();
 };
 
+/**
+*   Handles arrow ( left , right ) controls
+*/
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     switch (evt.keyCode) {
@@ -22,46 +24,84 @@ document.onkeydown = function(evt) {
 
 // Converts day ids to the relevant string
 function dayOfWeekAsString(dayIndex) {
-        return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dayIndex];
+        return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayIndex];
     }
-    // Converts month ids to the relevant string
+
+// Converts month ids to the relevant string
 function monthsAsString(monthIndex) {
-    return ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][monthIndex];
+    return ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][monthIndex];
 }
 
 // Creates a day element
 function createCalendarDay(num, day, mon, year) {
-    var currentCalendar = document.getElementById("calendar");
+    var currentCalendar = document.getElementById('calendar');
 
-    var newDay = document.createElement("div");
-    var date = document.createElement("p");
-    var dayElement = document.createElement("p");
+    var newDay = document.createElement('div');
+
+
+    var dateContent = document.createElement('div');
+
+    var dateEventCounter = document.createElement('p');
+    var dateEventCounterCtrlUp = document.createElement('p');
+    var dateEventCounterCtrlDown = document.createElement('p');
+
+    var dateInfo = document.createElement('div');
+    var date = document.createElement('p');
+    var dayElement = document.createElement('p');
+
+
+
+    dateEventCounterCtrlUp.onclick = function() {
+      var newCounter = parseInt(dateEventCounter.getAttribute('frinks')) + 1 ;
+      dateEventCounter.setAttribute('frinks',newCounter);
+      dateEventCounter.innerHTML = newCounter + ' fr';
+    }
+
+    dateEventCounterCtrlDown.onclick = function() {
+      var newCounter = parseInt(dateEventCounter.getAttribute('frinks')) - 1 ;
+      dateEventCounter.setAttribute('frinks',newCounter);
+      dateEventCounter.innerHTML = newCounter + ' fr';
+    }
+
+    dateEventCounter.innerHTML = "10 fr";
+    dateEventCounter.setAttribute('frinks',10);
+    dateEventCounterCtrlUp.innerHTML = '^';
+    dateEventCounterCtrlDown.innerHTML = 'v';
+
+    dateContent.appendChild(dateEventCounterCtrlUp);
+    dateContent.appendChild(dateEventCounter);
+    dateContent.appendChild(dateEventCounterCtrlDown);
+
 
     date.innerHTML = num;
     dayElement.innerHTML = day;
 
-    newDay.className = "calendar-day ";
+    dateContent.className = 'calendar-day-content ';
+    dateInfo.className = 'calendar-day-info ';
+    newDay.className = 'calendar-day ';
 
-    // Set ID of element as date formatted "8-January" etc 
-    newDay.id = num + "-" + mon + "-" +year;
+    // Set ID of element as date formatted '8-January' etc
+    newDay.id = num + '-' + mon + '-' +year;
 
-    newDay.appendChild(date);
-    newDay.appendChild(dayElement);
+
+    dateInfo.appendChild(date);
+    dateInfo.appendChild(dayElement);
+
+    newDay.appendChild(dateInfo);
+    newDay.appendChild(dateContent);
+
     currentCalendar.appendChild(newDay);
 }
 
 // Clears all days from the calendar
 function clearCalendar() {
-    var currentCalendar = document.getElementById("calendar");
-
-    currentCalendar.innerHTML = "";
-
+    var currentCalendar = document.getElementById('calendar');
+    currentCalendar.innerHTML = '';
 }
 
 // Clears the calendar and shows the next month
 function nextMonth() {
     clearCalendar();
-
     date.setMonth(date.getMonth() + 1);
 
     createMonth(date.getMonth());
@@ -77,7 +117,7 @@ function previousMonth() {
 
 // Creates and populates all of the days to make up the month
 function createMonth() {
-    var currentCalendar = document.getElementById("calendar");
+    var currentCalendar = document.getElementById('calendar');
 
     var dateObject = new Date();
     dateObject.setDate(date.getDate());
@@ -94,8 +134,8 @@ function createMonth() {
     }
 
     // Set the text to the correct month
-    var currentMonthText = document.getElementById("current-month");
-    currentMonthText.innerHTML = monthsAsString(date.getMonth()) + " " + date.getFullYear();
+    var currentMonthText = document.getElementById('current-month');
+    currentMonthText.innerHTML = monthsAsString(date.getMonth()) + ' ' + date.getFullYear();
 
     getCurrentDay();
 }
@@ -110,6 +150,6 @@ function getCurrentDay() {
     var currentYear = todaysDate.getFullYear();
     var thisMonth = monthsAsString(currentMonth);
     // Find element with the ID for today
-    currentDay = document.getElementById(today + "-" + thisMonth + "-" + currentYear);
-    currentDay.className = "calendar-day today";
+    currentDay = document.getElementById(today + '-' + thisMonth + '-' + currentYear);
+    currentDay.className = 'calendar-day today';
 }
