@@ -50,7 +50,7 @@ h1 {
 
 
 
-.calendar-day:before {
+.calendar-day:before { 
   content: '';
   padding-top: 100%;
   display: inline-block;
@@ -65,7 +65,7 @@ h1 {
   bottom: 0;
 }
 
-.calendar-day-content{
+.calendar-day-event{
   position:  absolute;
   line-height: 2px;
   font-size: x-large;
